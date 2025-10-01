@@ -504,4 +504,4 @@ Accept: application/json
 
 ## 👨‍💻 Autor
 
-Desenvolvido por RUAN LIMA SILVA com ❤️ para o Challenge Mottu - FIAP Global Solution
+Desenvolvido por RUAN LIMA SILVA, RICHARDY BORGES e MARCOS VINICUS  para o Challenge Mottu - FIAP Global Solution
