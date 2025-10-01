@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: head"></head>
+<body>
+<div th:replace="header :: header"></div>
+<main>
+    <div class="container">
+        <h2 th:text="${moto != null} ? 'Editar Moto' : 'Cadastrar Nova Moto'"></h2>
+        <form th:action="${moto != null} ? @{'/motos/editar/' + ${moto.placa}} : @{/motos/criar}" method="post">
+            <label>Placa:</label>
+            <input type="text" name="placa" th:value="${moto?.placa}" required/>
+            <label>Modelo:</label>
+            <input type="text" name="modelo" th:value="${moto?.modelo}" required/>
+            <label>Ano:</label>
+            <input type="number" name="ano" th:value="${moto?.ano}" required/>
+            <label>Cor:</label>
+            <input type="text" name="cor" th:value="${moto?.cor}" required/>
+            <label>Status:</label>
+            <input type="text" name="status" th:value="${moto?.status}" required/>
+            <button class="btn" type="submit">Salvar</button>
+            <a class="btn" href="/motos">Cancelar</a>
+        </form>
+    </div>
+</main>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>
