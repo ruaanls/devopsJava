@@ -5,19 +5,19 @@ docker build -t challenge .
 az login       
 az account set --subscription SUA_SUBSCRIPTION_ID  
 az group create --name rgchallengemottu --location eastus  
-az provider register --namespace Microsoft.ContainerRegister    
+az provider register --namespace Microsoft.ContainerRegister
 az acr create --resource-group rgchallengemottu --name acrchallenge --sku Standard --location eastus --public-network-enabled true --admin-enabled true 
 docker tag challenge acrchallenge.azurecr.io/challenge:v1  
-az acr login --name acrchallenge.azurecr.io             
+az acr login --name acrchallengeo
 docker push acrchallenge.azurecr.io/challenge:v1  
 docker build -t acrchallenge.azurecr.io/challenge:v2 .  
-az acr login --name acrchallenge.azurecr.io             
+az acr login --name acrchallenge
 docker push acrchallenge.azurecr.io/challenge:v2
 docker build -t acrchallenge.azurecr.io/challenge:v3 .
-az acr login --name acrchallenge.azurecr.io             
+az acr login --name acrchallenge
 docker push acrchallenge.azurecr.io/challenge:v3
 docker build -t acrchallenge.azurecr.io/challenge:v4 .
- az acr login --name acrchallenge.azurecr.io             
+ az acr login --name acrchallenge
 docker push acrchallenge.azurecr.io/challenge:v4
 
 
