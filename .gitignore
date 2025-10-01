@@ -1,37 +1,44 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Credenciais e variáveis de ambiente
+.env
+.env.local
+.env.production
+*.key
+*.pem
+*.p12
+*.pfx
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Logs
+*.log
+logs/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+# Arquivos de configuração com credenciais
+config/secrets.properties
+application-secrets.properties
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Arquivos temporários
+*.tmp
+*.temp
 
-### VS Code ###
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+target/
+*.jar
+*.war
+*.ear
+
+# Node modules (se houver frontend)
+node_modules/
+
+# Arquivos de backup
+*.bak
+*.backup

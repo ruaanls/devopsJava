@@ -1,0 +1,38 @@
+Embora tenha explicado código a código no vídeo segue a lista de códigos utilizados para que o ACR + ACI consiga ser criado e configurado
+
+
+docker build -t challenge .
+az login       
+az account set --subscription SUA_SUBSCRIPTION_ID  
+az group create --name rgchallengemottu --location eastus  
+az provider register --namespace Microsoft.ContainerRegister    
+az acr create --resource-group rgchallengemottu --name acrchallenge --sku Standard --location eastus --public-network-enabled true --admin-enabled true 
+docker tag challenge acrchallenge.azurecr.io/challenge:v1  
+az acr login --name acrchallenge.azurecr.io             
+docker push acrchallenge.azurecr.io/challenge:v1  
+docker build -t acrchallenge.azurecr.io/challenge:v2 .  
+az acr login --name acrchallenge.azurecr.io             
+docker push acrchallenge.azurecr.io/challenge:v2
+docker build -t acrchallenge.azurecr.io/challenge:v3 .
+az acr login --name acrchallenge.azurecr.io             
+docker push acrchallenge.azurecr.io/challenge:v3
+docker build -t acrchallenge.azurecr.io/challenge:v4 .
+ az acr login --name acrchallenge.azurecr.io             
+docker push acrchallenge.azurecr.io/challenge:v4
+
+
+az container create \
+ --resource-group rgchallengemottu \
+ --name challenge-v1 \
+ --image acrchallenge.azurecr.io/challenge:v4 \
+ --cpu 1 --memory 1.5 \
+ --registry-login-server acrchallenge.azurecr.io \
+ --registry-username acrchallenge \
+ --registry-password "SUA_SENHA_DO_ACR" \
+ --environment-variables \
+   DB_URL="jdbc:sqlserver://SEU_SERVIDOR.database.windows.net:1433;database=SEU_BANCO;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;" \
+   DB_USERNAME="SEU_USUARIO_SQL" \
+   DB_PASSWORD="SUA_SENHA_DO_BANCO" \
+ --os-type Linux \
+ --ip-address Public \
+ --ports 8080
