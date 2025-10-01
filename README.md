@@ -103,8 +103,7 @@ export GOOGLE_CLIENT_SECRET=seu-client-secret
 ```
 
 4. **Acesse a aplicação**
-- Interface Web: http://localhost:8080
-- API REST: http://localhost:8080/api
+- API REST: 52.226.54.155:8080/api
 
 ### 🐳 Dockerização
 
@@ -119,7 +118,109 @@ FROM eclipse-temurin:21-jdk-alpine AS builder
 FROM amazoncorretto:21-alpine3.21
 # ... configurações de execução
 ```
+---
 
+## 🎥 **Demonstração em Vídeo**
+
+### 📺 **Vídeo Completo da Aplicação**
+
+Assista à demonstração completa do sistema de gestão de estacionamento:
+
+**[🎬 Vídeo de Demonstração - Sistema de Gestão de Estacionamento](https://www.youtube.com/watch?v=k_JVuyBvOq0)**
+
+### ⏰ **Timestamps do Vídeo**
+
+#### **🧪 Teste da Aplicação (0:00 - 9:00)**
+- **0:00 - 3:00**: Apresentação do projeto e funcionalidades
+- **3:00 - 6:00**: Demonstração da interface web
+- **6:00 - 9:00**: Teste dos endpoints da API REST
+
+#### **🚀 Deploy na Azure (9:00 - 16:00)**
+- **9:00 - 12:00**: Build da imagem Docker e configuração do ACR
+- **12:00 - 14:00**: Push das imagens para Azure Container Registry
+- **14:00 - 16:00**: Criação do Container Instance com variáveis de ambiente
+
+### 🎯 **O que você verá no vídeo:**
+
+#### **Parte 1: Teste da Aplicação (0:00 - 9:00)**
+- ✅ **Interface Web**: Navegação pelas páginas de motos e vagas
+- ✅ **API REST**: Testes dos endpoints com Postman/Insomnia
+- ✅ **Funcionalidades**: Cadastro, edição, movimentação de motos
+- ✅ **Gestão de Vagas**: Criação e controle de vagas
+- ✅ **Relacionamentos**: Como motos se relacionam com vagas
+
+#### **Parte 2: Deploy na Azure (9:00 - 16:00)**
+- 🐳 **Build Docker**: Criação da imagem Docker do projeto
+- 🏗️ **Azure Container Registry**: Configuração e login no ACR
+- 📦 **Push de Imagens**: Upload das versões v1, v2, v3, v4
+- 🚀 **Container Instance**: Criação do ACI com variáveis de ambiente
+- 🔐 **Variáveis de Ambiente**: Configuração do banco de dados SQL Server
+- 🌐 **Networking**: Configuração de IP público e portas
+
+### 🚀 **Como usar o vídeo:**
+
+1. **Para Testes**: Use a primeira parte (0:00 - 9:00) para entender como testar a aplicação
+2. **Para Deploy**: Use a segunda parte (9:00 - 16:00) para ver o deploy completo na Azure
+3. **Para Scripts**: Consulte o arquivo `ScriptsACRACI` com todos os comandos utilizados
+
+### 📚 **Recursos Adicionais**
+
+- **Código Fonte**: Disponível no repositório GitHub
+- **API em Produção**: `http://52.226.54.155:8080`
+- **Documentação**: Este README completo
+- **Tutorial Azure**: Seção de deploy na nuvem
+- **Scripts de Deploy**: Arquivo `ScriptsACRACI` com comandos utilizados
+
+### 🔧 **Scripts de Deploy (ScriptsACRACI)**
+
+O arquivo `ScriptsACRACI` contém todos os comandos utilizados no vídeo para o deploy:
+
+#### **🐳 Build e Tag da Imagem**
+```bash
+docker build -t challenge .
+docker tag challenge acrchallenge.azurecr.io/challenge:v1
+```
+
+#### **🏗️ Configuração Azure**
+```bash
+az login
+az account set --subscription SUA_SUBSCRIPTION_ID
+az group create --name rgchallengemottu --location eastus
+az provider register --namespace Microsoft.ContainerRegister
+```
+
+#### **📦 Azure Container Registry**
+```bash
+az acr create --resource-group rgchallengemottu --name acrchallenge --sku Standard --location eastus --public-network-enabled true --admin-enabled true
+az acr login --name acrchallenge.azurecr.io
+```
+
+#### **🚀 Push das Versões**
+```bash
+docker push acrchallenge.azurecr.io/challenge:v1
+docker push acrchallenge.azurecr.io/challenge:v2
+docker push acrchallenge.azurecr.io/challenge:v3
+docker push acrchallenge.azurecr.io/challenge:v4
+```
+
+#### **🌐 Container Instance**
+```bash
+az container create \
+ --resource-group rgchallengemottu \
+ --name challenge-v1 \
+ --image acrchallenge.azurecr.io/challenge:v4 \
+ --cpu 1 --memory 1.5 \
+ --registry-login-server acrchallenge.azurecr.io \
+ --registry-username acrchallenge \
+ --registry-password "SUA_SENHA_DO_ACR" \
+ --environment-variables \
+   DB_URL="jdbc:sqlserver://SEU_SERVIDOR.database.windows.net:1433;database=SEU_BANCO;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;" \
+   DB_USERNAME="SEU_USUARIO_SQL" \
+   DB_PASSWORD="SUA_SENHA_DO_BANCO" \
+ --os-type Linux \
+ --ip-address Public \
+ --ports 8080
+```
 ---
 
 ## 🚀 Tutorial: Deploy na Azure
@@ -397,109 +498,7 @@ Content-Type: application/json
 Accept: application/json
 ```
 
----
 
-## 🎥 **Demonstração em Vídeo**
-
-### 📺 **Vídeo Completo da Aplicação**
-
-Assista à demonstração completa do sistema de gestão de estacionamento:
-
-**[🎬 Vídeo de Demonstração - Sistema de Gestão de Estacionamento](https://www.youtube.com/watch?v=k_JVuyBvOq0)**
-
-### ⏰ **Timestamps do Vídeo**
-
-#### **🧪 Teste da Aplicação (0:00 - 9:00)**
-- **0:00 - 3:00**: Apresentação do projeto e funcionalidades
-- **3:00 - 6:00**: Demonstração da interface web
-- **6:00 - 9:00**: Teste dos endpoints da API REST
-
-#### **🚀 Deploy na Azure (9:00 - 16:00)**
-- **9:00 - 12:00**: Build da imagem Docker e configuração do ACR
-- **12:00 - 14:00**: Push das imagens para Azure Container Registry
-- **14:00 - 16:00**: Criação do Container Instance com variáveis de ambiente
-
-### 🎯 **O que você verá no vídeo:**
-
-#### **Parte 1: Teste da Aplicação (0:00 - 9:00)**
-- ✅ **Interface Web**: Navegação pelas páginas de motos e vagas
-- ✅ **API REST**: Testes dos endpoints com Postman/Insomnia
-- ✅ **Funcionalidades**: Cadastro, edição, movimentação de motos
-- ✅ **Gestão de Vagas**: Criação e controle de vagas
-- ✅ **Relacionamentos**: Como motos se relacionam com vagas
-
-#### **Parte 2: Deploy na Azure (9:00 - 16:00)**
-- 🐳 **Build Docker**: Criação da imagem Docker do projeto
-- 🏗️ **Azure Container Registry**: Configuração e login no ACR
-- 📦 **Push de Imagens**: Upload das versões v1, v2, v3, v4
-- 🚀 **Container Instance**: Criação do ACI com variáveis de ambiente
-- 🔐 **Variáveis de Ambiente**: Configuração do banco de dados SQL Server
-- 🌐 **Networking**: Configuração de IP público e portas
-
-### 🚀 **Como usar o vídeo:**
-
-1. **Para Testes**: Use a primeira parte (0:00 - 9:00) para entender como testar a aplicação
-2. **Para Deploy**: Use a segunda parte (9:00 - 16:00) para ver o deploy completo na Azure
-3. **Para Scripts**: Consulte o arquivo `ScriptsACRACI` com todos os comandos utilizados
-
-### 📚 **Recursos Adicionais**
-
-- **Código Fonte**: Disponível no repositório GitHub
-- **API em Produção**: `http://52.226.54.155:8080`
-- **Documentação**: Este README completo
-- **Tutorial Azure**: Seção de deploy na nuvem
-- **Scripts de Deploy**: Arquivo `ScriptsACRACI` com comandos utilizados
-
-### 🔧 **Scripts de Deploy (ScriptsACRACI)**
-
-O arquivo `ScriptsACRACI` contém todos os comandos utilizados no vídeo para o deploy:
-
-#### **🐳 Build e Tag da Imagem**
-```bash
-docker build -t challenge .
-docker tag challenge acrchallenge.azurecr.io/challenge:v1
-```
-
-#### **🏗️ Configuração Azure**
-```bash
-az login
-az account set --subscription SUA_SUBSCRIPTION_ID
-az group create --name rgchallengemottu --location eastus
-az provider register --namespace Microsoft.ContainerRegister
-```
-
-#### **📦 Azure Container Registry**
-```bash
-az acr create --resource-group rgchallengemottu --name acrchallenge --sku Standard --location eastus --public-network-enabled true --admin-enabled true
-az acr login --name acrchallenge.azurecr.io
-```
-
-#### **🚀 Push das Versões**
-```bash
-docker push acrchallenge.azurecr.io/challenge:v1
-docker push acrchallenge.azurecr.io/challenge:v2
-docker push acrchallenge.azurecr.io/challenge:v3
-docker push acrchallenge.azurecr.io/challenge:v4
-```
-
-#### **🌐 Container Instance**
-```bash
-az container create \
- --resource-group rgchallengemottu \
- --name challenge-v1 \
- --image acrchallenge.azurecr.io/challenge:v4 \
- --cpu 1 --memory 1.5 \
- --registry-login-server acrchallenge.azurecr.io \
- --registry-username acrchallenge \
- --registry-password "SUA_SENHA_DO_ACR" \
- --environment-variables \
-   DB_URL="jdbc:sqlserver://SEU_SERVIDOR.database.windows.net:1433;database=SEU_BANCO;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;" \
-   DB_USERNAME="SEU_USUARIO_SQL" \
-   DB_PASSWORD="SUA_SENHA_DO_BANCO" \
- --os-type Linux \
- --ip-address Public \
- --ports 8080
-```
 
 ---
 
